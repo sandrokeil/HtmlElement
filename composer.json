@@ -1,0 +1,39 @@
+{
+    "name": "sandrokeil/html-element",
+    "description": "Zend Framework 2 view helper plugin for generating html elements.",
+    "homepage": "https://github.com/sandrokeil/HtmlElement",
+    "license": "BSD-3-Clause",
+    "type": "library",
+    "keywords": [
+        "zf2",
+        "view",
+        "zend framework",
+        "view helper",
+        "html"
+    ],
+    "authors": [
+        {"name": "Sandro Keil", "homepage": "https://github.com/sandrokeil"}
+    ],
+    "autoload": {
+        "psr-4": {
+            "Sake\\HtmlElement\\": "src/",
+            "SakeTest\\HtmlElement\\": "test/"
+        }
+    },
+    "require": {
+        "php": "~5.3",
+        "zendframework/zend-view": "~2.2"
+    },
+    "require-dev": {
+        "zendframework/zend-test": "~2.2",
+        "zendframework/zend-config": "~2.2",
+        "zendframework/zend-form": "~2.2",
+        "zendframework/zend-serializer": "~2.2",
+        "zendframework/zend-log": "~2.2",
+        "zendframework/zend-modulemanager": "~2.2",
+        "sandrokeil/citools": "~1.0"
+    },
+    "suggest": {
+        "zendframework/zend-modulemanager": "Zend\\ModuleManager to use default module configuration"
+    }
+}
