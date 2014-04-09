@@ -35,4 +35,21 @@ class HtmlElementTest extends TestCase
 
         $this->assertEquals($tag, $cut->getTag());
     }
+
+    /**
+     * Tests send() with address balance request
+     *
+     * @covers \Sake\HtmlElement\View\Helper\HtmlElement::setId
+     * @covers \Sake\HtmlElement\View\Helper\HtmlElement::getId
+     * @group view
+     */
+    public function testSetId()
+    {
+        $cut = new HtmlElement();
+        $id = 'unique';
+
+        $cut->setId($id);
+
+        $this->assertEquals($id, $cut->getId());
+    }
 }
