@@ -30,14 +30,14 @@ class HtmlElement extends AbstractHelper
      *
      * @var string
      */
-    protected $text;
+    protected $text = '';
 
     /**
      * Array of attribute / value pair
      *
      * @var array
      */
-    protected $attributes;
+    protected $attributes = array();
 
     /**
      * Escape html
@@ -262,7 +262,7 @@ class HtmlElement extends AbstractHelper
         $escaper = $this->getView()->plugin('escapehtmlattr');
 
         foreach ($this->attributes as $key => $value) {
-            $attributes .= $key . '="' . $escaper($value) . '"';
+            $attributes .= ' ' . $key . '="' . $escaper($value) . '"';
         }
         return $attributes;
     }
@@ -284,9 +284,6 @@ class HtmlElement extends AbstractHelper
         }
         $start = $this->tag;
 
-        if (!empty($attributes)) {
-            $start .= ' ' . $attributes;
-        }
-        return '<' . $start . '>' . $text . '</' . $this->tag . '>';
+        return '<' . $start . $attributes . '>' . $text . '</' . $this->tag . '>';
     }
 }
