@@ -1,7 +1,7 @@
 # HtmlElement view helper for Zend Framework 2
 
 [![Build Status](https://travis-ci.org/sandrokeil/HtmlElement.png?branch=master)](https://travis-ci.org/sandrokeil/HtmlElement)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/sandrokeil/HtmlElement/badges/quality-score.png?s=e0089b63bdd99801480a5c7aedbda372767990ab)](https://scrutinizer-ci.com/g/sandrokeil/HtmlElement/)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/sandrokeil/HtmlElement/badges/quality-score.png?s=17ebfee6d9890d3f43becccc084746fed2fc6707)](https://scrutinizer-ci.com/g/sandrokeil/HtmlElement/)
 [![Coverage Status](https://coveralls.io/repos/sandrokeil/HtmlElement/badge.png)](https://coveralls.io/r/sandrokeil/HtmlElement)
 [![Latest Stable Version](https://poser.pugx.org/sandrokeil/html-element/v/stable.png)](https://packagist.org/packages/sandrokeil/html-element)
 [![Dependency Status](https://www.versioneye.com/user/projects/5345c1c6e97a46b372000101/badge.png)](https://www.versioneye.com/user/projects/5345c1c6e97a46b372000101)

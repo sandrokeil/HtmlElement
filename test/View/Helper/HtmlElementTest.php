@@ -225,7 +225,9 @@ class HtmlElementTest extends TestCase
 
         // maybe there is a better way to do this, but at the moment it works
         $callback = function () {
-            return function ($value) { return $value; };
+            return function ($value) {
+                return $value;
+            };
         };
 
         $stub->expects($this->any())
