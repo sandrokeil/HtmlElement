@@ -1,6 +1,6 @@
 {
     "name": "sandrokeil/html-element",
-    "description": "Zend Framework 2 view helper plugin for generating html elements.",
+    "description": "Zend Framework 2 view helper plugin to use html tags like objects and to render them.",
     "homepage": "https://github.com/sandrokeil/HtmlElement",
     "license": "BSD-3-Clause",
     "type": "library",
@@ -34,6 +34,6 @@
         "sandrokeil/citools": "~1.0"
     },
     "suggest": {
-        "zendframework/zend-modulemanager": "Zend\\ModuleManager to use default module configuration"
+        "zendframework/zend-modulemanager": "To use default module configuration"
     }
 }

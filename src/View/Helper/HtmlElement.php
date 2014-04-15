@@ -47,6 +47,30 @@ class HtmlElement extends AbstractHelper
     protected $renderHtml = false;
 
     /**
+     * List of self closing tags for valid html
+     *
+     * @var array
+     */
+    protected $singletonTags = array(
+        'area',
+        'base',
+        'br',
+        'col',
+        'command',
+        'embed',
+        'hr',
+        'img',
+        'input',
+        'keygen',
+        'link',
+        'meta',
+        'param',
+        'source',
+        'track',
+        'wbr',
+    );
+
+    /**
      * Create html object with provided settings.
      *
      * @param string $tag Html tag
@@ -274,7 +298,10 @@ class HtmlElement extends AbstractHelper
      */
     public function render()
     {
-        $attributes = $this->buildAttributes();
+        if (in_array($this->tag, $this->singletonTags)) {
+            // strict html 5 is omitted for backward compatibility, html 5 is still valid
+            return '<' . $this->tag . $this->buildAttributes() . ' />';
+        }
 
         if (!$this->renderHtml) {
             $escaper = $this->getView()->plugin('escapehtml');
@@ -282,8 +309,6 @@ class HtmlElement extends AbstractHelper
         } else {
             $text = $this->text;
         }
-        $start = $this->tag;
-
-        return '<' . $start . $attributes . '>' . $text . '</' . $this->tag . '>';
+        return '<' . $this->tag . $this->buildAttributes() . '>' . $text . '</' . $this->tag . '>';
     }
 }

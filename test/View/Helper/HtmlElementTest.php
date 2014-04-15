@@ -221,22 +221,7 @@ class HtmlElementTest extends TestCase
      */
     public function testRender()
     {
-        $stub = $this->getMock('Sake\HtmlElement\View\Helper\HtmlElement', array('getView', 'plugin'));
-
-        // maybe there is a better way to do this, but at the moment it works
-        $callback = function () {
-            return function ($value) {
-                return $value;
-            };
-        };
-
-        $stub->expects($this->any())
-            ->method('getView')
-            ->will($this->returnSelf());
-
-        $stub->expects($this->any())
-            ->method('plugin')
-            ->will($this->returnCallback($callback));
+        $stub = $this->getStubWithViewPluginManager();
 
         $text = 'my text';
         $tag = 'div';
@@ -255,5 +240,123 @@ class HtmlElementTest extends TestCase
 
         $element->enableHtml(true);
         $this->assertEquals($expectedHtml, $element->render(), 'Html element rendering failed');
+    }
+
+    /**
+     * Tests if html element rendered self closing tag successfully
+     *
+     * @depends testInvokeShouldReturnObjectWithSpecifiedOptions
+     * @dataProvider dataProviderForTestRenderWithSelfClosingTag
+     * @covers \Sake\HtmlElement\View\Helper\HtmlElement::render
+     * @covers \Sake\HtmlElement\View\Helper\HtmlElement::buildAttributes
+     * @covers \Sake\HtmlElement\View\Helper\HtmlElement::__toString
+     * @covers \Sake\HtmlElement\View\Helper\HtmlElement::toString
+     * @group view
+     */
+    public function testRenderWithSelfClosingTag($tag)
+    {
+        $stub = $this->getStubWithViewPluginManager();
+
+        // text should not be rendered
+        $text = 'my text';
+        $id = 'unique';
+        $class = 'full';
+        $attributes = array('id' => $id, 'class' => $class);
+
+        $expectedHtml = '<' . $tag . ' id="unique" class="full" />';
+
+        /* @var $element HtmlElement */
+        $element = $stub($tag, $text, $attributes);
+
+        $this->assertEquals($expectedHtml, $element->render(), 'Html element rendering failed');
+        $this->assertEquals($expectedHtml, $element->__toString(), 'Html element rendering failed');
+        $this->assertEquals($expectedHtml, $element->toString(), 'Html element rendering failed');
+    }
+
+    /**
+     * Returns stub with mocked view plugin manager
+     *
+     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @throws \PHPUnit_Framework_Exception
+     */
+    protected function getStubWithViewPluginManager()
+    {
+        $stub = $this->getMock('Sake\HtmlElement\View\Helper\HtmlElement', array('getView', 'plugin'));
+
+        // maybe there is a better way to do this, but at the moment it works
+        $callback = function () {
+            return function ($value) {
+                return $value;
+            };
+        };
+
+        $stub->expects($this->any())
+            ->method('getView')
+            ->will($this->returnSelf());
+
+        $stub->expects($this->any())
+            ->method('plugin')
+            ->will($this->returnCallback($callback));
+
+        return $stub;
+    }
+
+    /**
+     * data provider for the test method testRenderWithSelfClosingTag()
+     *
+     * @return array
+     */
+    public function dataProviderForTestRenderWithSelfClosingTag()
+    {
+        return array(
+            array(
+                'tag' => 'area',
+            ),
+            array(
+                'tag' => 'base',
+            ),
+            array(
+                'tag' => 'br',
+            ),
+            array(
+                'tag' => 'col',
+            ),
+            array(
+                'tag' => 'command',
+            ),
+            array(
+                'tag' => 'embed',
+            ),
+            array(
+                'tag' => 'hr',
+            ),
+            array(
+                'tag' => 'img',
+            ),
+            array(
+                'tag' => 'input',
+            ),
+            array(
+                'tag' => 'keygen',
+            ),
+            array(
+                'tag' => 'link',
+            ),
+            array(
+                'tag' => 'meta',
+            ),
+            array(
+                'tag' => 'param',
+            ),
+            array(
+                'tag' => 'source',
+            ),
+            array(
+                'tag' => 'track',
+            ),
+            array(
+                'tag' => 'wbr',
+            ),
+        );
     }
 }
