@@ -6,6 +6,7 @@
 [![Latest Stable Version](https://poser.pugx.org/sandrokeil/html-element/v/stable.png)](https://packagist.org/packages/sandrokeil/html-element)
 [![Dependency Status](https://www.versioneye.com/user/projects/5345c1c6e97a46b372000101/badge.png)](https://www.versioneye.com/user/projects/5345c1c6e97a46b372000101)
 [![Total Downloads](https://poser.pugx.org/sandrokeil/html-element/downloads.png)](https://packagist.org/packages/sandrokeil/html-element)
+[![License](https://poser.pugx.org/sandrokeil/html-element/license.png)](https://packagist.org/packages/sandrokeil/html-element)
 
 Zend Framework 2 view helper plugin for generating html element. Use html tags as objects and manipulate html
 attributes and values.
