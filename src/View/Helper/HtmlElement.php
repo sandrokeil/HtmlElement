@@ -91,13 +91,19 @@ class HtmlElement extends AbstractHelper
     }
 
     /**
-     * Renders element
+     * Renders element. Triggers an error instead of throw an exception, because it is not allowed here.
      *
      * @return string
      */
     public function __toString()
     {
-        return $this->render();
+        try {
+            $html = $this->render();
+        } catch (\Exception $exception) {
+            trigger_error($exception->getMessage() . PHP_EOL . $exception->getTraceAsString(), E_USER_WARNING);
+            $html = '';
+        }
+        return $html;
     }
 
     /**
