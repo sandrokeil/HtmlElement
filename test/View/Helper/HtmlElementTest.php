@@ -11,6 +11,7 @@ namespace SakeTest\HtmlElement\View\Helper;
 
 use Sake\HtmlElement\View\Helper\HtmlElement;
 use PHPUnit_Framework_TestCase as TestCase;
+use Zend\View\HelperPluginManager;
 
 /**
  * Class HtmlElementTest
@@ -19,6 +20,45 @@ use PHPUnit_Framework_TestCase as TestCase;
  */
 class HtmlElementTest extends TestCase
 {
+    /**
+     * PHP errors
+     *
+     * @var array
+     */
+    protected $errors = array();
+
+    /**
+     * Test error handler to get php errors
+     *
+     * @param int $errno
+     * @param string $errstr
+     * @param string $errfile
+     * @param string $errline
+     * @param string $errcontext
+     */
+    public function errorHandler($errno, $errstr, $errfile, $errline, $errcontext)
+    {
+        $this->errors[] = compact("errno", "errstr", "errfile", "errline", "errcontext");
+    }
+
+    /**
+     * Checks if php error was occured
+     *
+     * @param int $errno
+     * @param string $errstr
+     * @return bool True if exists, otherwise false
+     */
+    public function hasError($errno, $errstr)
+    {
+        foreach ($this->errors as $error) {
+            if (false !== strpos($error["errstr"], $errstr)
+                && $error["errno"] === $errno) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /**
      * Tests setTag
      *
@@ -219,6 +259,39 @@ class HtmlElementTest extends TestCase
      * @depends testInvokeShouldReturnObjectWithSpecifiedOptions
      * @group view
      */
+    public function testToStringShouldTriggerErrorIfExceptionOccurs()
+    {
+        $this->errors = array();
+        set_error_handler(array($this, "errorHandler"));
+
+        $stub = $this->getStubWithViewPluginManager(true);
+
+        $text = 'my text';
+        $tag = 'div';
+        $id = 'unique';
+        $class = 'box shadow';
+        $attributes = array(array('id' => $id, 'class' => $class));
+
+        /* @var $element HtmlElement */
+        $element = $stub($tag, $text, $attributes);
+        $html = (string) $element;
+
+        $this->assertFalse(
+            $this->hasError(E_USER_WARNING, 'Array provided'),
+            sprintf('Error "%s" with message "%s" was not found', E_USER_WARNING, 'Array provided')
+        );
+    }
+
+    /**
+     * Tests if html element rendered successfully
+     *
+     * @covers \Sake\HtmlElement\View\Helper\HtmlElement::render
+     * @covers \Sake\HtmlElement\View\Helper\HtmlElement::buildAttributes
+     * @covers \Sake\HtmlElement\View\Helper\HtmlElement::__toString
+     * @covers \Sake\HtmlElement\View\Helper\HtmlElement::toString
+     * @depends testInvokeShouldReturnObjectWithSpecifiedOptions
+     * @group view
+     */
     public function testRender()
     {
         $stub = $this->getStubWithViewPluginManager();
@@ -276,15 +349,19 @@ class HtmlElementTest extends TestCase
     /**
      * Returns stub with mocked view plugin manager
      *
+     * @param bool $realPluginmanager
      * @return \PHPUnit_Framework_MockObject_MockObject
-     * @throws \PHPUnit_Framework_Exception
      */
-    protected function getStubWithViewPluginManager()
+    protected function getStubWithViewPluginManager($realPluginmanager = false)
     {
         $stub = $this->getMock('Sake\HtmlElement\View\Helper\HtmlElement', array('getView', 'plugin'));
 
         // maybe there is a better way to do this, but at the moment it works
-        $callback = function () {
+        $callback = function ($name) use ($realPluginmanager) {
+            if ($realPluginmanager) {
+                $plugin = new HelperPluginManager();
+                return $plugin->get($name);
+            }
             return function ($value) {
                 return $value;
             };
