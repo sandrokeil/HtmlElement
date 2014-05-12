@@ -43,11 +43,11 @@ echo $this->html('div', 'my content', array('id' => 'content', 'class' => 'box s
 
 // or
 $div = $this->html('div');
-$div->setText('my content')
+echo $div->setText('my content')
     ->setAttributes(array('id' => 'content', 'class' => 'box shadow'));
 
 // to render html you can use
-$div->enableHtml(true)
+echo $div->enableHtml(true)
     ->setText(
         $this->html('p')->setText('Hello World!')->appendClass('welcome');
     );
