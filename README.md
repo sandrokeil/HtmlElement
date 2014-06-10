@@ -25,7 +25,7 @@ Put the following into your composer.json
 
     {
         "require": {
-            "sandrokeil/html-element": "dev-master"
+            "sandrokeil/html-element": "~1.0"
         }
     }
 
