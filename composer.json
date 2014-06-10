@@ -9,7 +9,9 @@
         "view",
         "zend framework",
         "view helper",
-        "html"
+        "html",
+        "html element",
+        "html objects"
     ],
     "authors": [
         {"name": "Sandro Keil", "homepage": "https://github.com/sandrokeil"}

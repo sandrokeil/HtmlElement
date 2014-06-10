@@ -13,8 +13,8 @@ Zend Framework 2 view helper plugin for generating html element. Use html tags a
 
  * **Well tested.** Besides unit test and continuous integration/inspection this solution is also ready for production use.
  * **Great foundations.** Based on [Zend Framework 2](https://github.com/zendframework/zf2)
- * **Every change is tracked**. Want to know whats new? Take a look at [CHANGELOG.md](https://github.com/sandrokeil/HtmlElement/blob/master/CHANGELOG.md)
- * **Listen to your ideas.** Have a great idea? Bring your tested pull request or open a new issue.
+ * **Every change is tracked**. Want to know whats new? Take a look at [CHANGELOG.md](CHANGELOG.md)
+ * **Listen to your ideas.** Have a great idea? Bring your tested pull request or open a new issue. See [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## Installation
 
