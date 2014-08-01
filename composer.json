@@ -24,7 +24,8 @@
     },
     "require": {
         "php": "~5.3",
-        "zendframework/zend-view": "~2.2"
+        "zendframework/zend-view": "~2.2",
+        "zendframework/zend-escaper": "~2.2"
     },
     "require-dev": {
         "zendframework/zend-test": "~2.2",

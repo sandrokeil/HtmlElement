@@ -9,6 +9,7 @@
 
 namespace Sake\HtmlElement\View\Helper;
 
+use Zend\Escaper\Escaper;
 use Zend\View\Helper\AbstractHelper;
 
 /**
@@ -71,6 +72,20 @@ class HtmlElement extends AbstractHelper
     );
 
     /**
+     * Html attribute escaper
+     *
+     * @var Escaper
+     */
+    protected $helperEscapeHtmlAttr;
+
+    /**
+     * Html escaper
+     *
+     * @var Escaper
+     */
+    protected $helperEscapeHtml;
+
+    /**
      * Create html object with provided settings.
      *
      * @param string $tag Html tag
@@ -81,6 +96,10 @@ class HtmlElement extends AbstractHelper
      */
     public function __invoke($tag, $text = '', array $attributes = array(), $renderHtml = false)
     {
+        // initialize helper for performance reasons
+        $this->getHelperEscapeHtml();
+        $this->getHelperEscapeHtmlAttr();
+
         $html = clone $this;
 
         $html->setTag($tag);
@@ -194,7 +213,6 @@ class HtmlElement extends AbstractHelper
         return $this;
     }
 
-
     /**
      * Returns css classes
      *
@@ -216,7 +234,6 @@ class HtmlElement extends AbstractHelper
     {
         $this->attributes['class'] = $class;
         return $this;
-
     }
 
     /**
@@ -289,10 +306,8 @@ class HtmlElement extends AbstractHelper
     {
         $attributes = '';
 
-        $escaper = $this->getView()->plugin('escapehtmlattr');
-
         foreach ($this->attributes as $key => $value) {
-            $attributes .= ' ' . $key . '="' . $escaper($value) . '"';
+            $attributes .= ' ' . $key . '="' . $this->getHelperEscapeHtmlAttr()->escapeHtmlAttr($value) . '"';
         }
         return $attributes;
     }
@@ -310,11 +325,60 @@ class HtmlElement extends AbstractHelper
         }
 
         if (!$this->renderHtml) {
-            $escaper = $this->getView()->plugin('escapehtml');
-            $text = $escaper($this->text);
+            $text = $this->getHelperEscapeHtml()->escapeHtml($this->text);
         } else {
             $text = $this->text;
         }
         return '<' . $this->tag . $this->buildAttributes() . '>' . $text . '</' . $this->tag . '>';
+    }
+
+    /**
+     * Sets escaper for html
+     *
+     * @param Escaper $helperEscapeHtml
+     * @return HtmlElement
+     */
+    public function setHelperEscapeHtml(Escaper $helperEscapeHtml)
+    {
+        $this->helperEscapeHtml = $helperEscapeHtml;
+        return $this;
+    }
+
+    /**
+     * Sets escaper for html attributes
+     *
+     * @param Escaper $helperEscapeHtmlAttr
+     * @return HtmlElement
+     */
+    public function setHelperEscapeHtmlAttr(Escaper $helperEscapeHtmlAttr)
+    {
+        $this->helperEscapeHtmlAttr = $helperEscapeHtmlAttr;
+        return $this;
+    }
+
+    /**
+     * Returns escaper for html attrbiutes, if no one is set, escaper of view will be used
+     *
+     * @return Escaper
+     */
+    protected function getHelperEscapeHtmlAttr()
+    {
+        if (null === $this->helperEscapeHtmlAttr) {
+            $this->helperEscapeHtmlAttr = $this->getView()->plugin('escapehtmlattr')->getEscaper();
+        }
+        return $this->helperEscapeHtmlAttr;
+    }
+
+    /**
+     * Returns escaper for html, if no one is set, escaper of view will be used
+     *
+     * @return Escaper
+     */
+    protected function getHelperEscapeHtml()
+    {
+        if (null === $this->helperEscapeHtml) {
+            $this->helperEscapeHtml = $this->getView()->plugin('escapehtml')->getEscaper();
+        }
+        return $this->helperEscapeHtml;
     }
 }

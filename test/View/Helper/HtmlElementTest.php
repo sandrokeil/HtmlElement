@@ -230,7 +230,7 @@ class HtmlElementTest extends TestCase
      */
     public function testInvokeShouldReturnObjectWithSpecifiedOptions()
     {
-        $cut = new HtmlElement();
+        $cut = $this->getStubWithEscaper();
 
         $text = 'my text';
         $tag = 'div';
@@ -264,7 +264,11 @@ class HtmlElementTest extends TestCase
         $this->errors = array();
         set_error_handler(array($this, "errorHandler"));
 
-        $stub = $this->getStubWithViewPluginManager(true);
+        $stub = $this->getStubWithEscaper(array('render'));
+
+        $stub->expects($this->any())
+            ->method('render')
+            ->will($this->throwException(new \Exception('Exception occurred')));
 
         $text = 'my text';
         $tag = 'div';
@@ -277,8 +281,8 @@ class HtmlElementTest extends TestCase
         $html = (string) $element;
 
         $this->assertFalse(
-            $this->hasError(E_USER_WARNING, 'Array provided'),
-            sprintf('Error "%s" with message "%s" was not found', E_USER_WARNING, 'Array provided')
+            $this->hasError(E_USER_WARNING, 'Exception occurred'),
+            sprintf('Error "%s" with message "%s" was not found', E_USER_WARNING, 'Exception occurred')
         );
     }
 
@@ -294,7 +298,7 @@ class HtmlElementTest extends TestCase
      */
     public function testRender()
     {
-        $stub = $this->getStubWithViewPluginManager();
+        $stub = $this->getStubWithEscaper();
 
         $text = 'my text';
         $tag = 'div';
@@ -328,7 +332,7 @@ class HtmlElementTest extends TestCase
      */
     public function testRenderWithSelfClosingTag($tag)
     {
-        $stub = $this->getStubWithViewPluginManager();
+        $stub = $this->getStubWithEscaper();
 
         // text should not be rendered
         $text = 'my text';
@@ -349,31 +353,32 @@ class HtmlElementTest extends TestCase
     /**
      * Returns stub with mocked view plugin manager
      *
-     * @param bool $realPluginmanager
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
-    protected function getStubWithViewPluginManager($realPluginmanager = false)
+    protected function getStubWithEscaper(array $methods = array())
     {
-        $stub = $this->getMock('Sake\HtmlElement\View\Helper\HtmlElement', array('getView', 'plugin'));
+        $stub = $this->getMock(
+            'Sake\HtmlElement\View\Helper\HtmlElement',
+            array_merge(array('getView', 'plugin', 'getHelperEscapeHtmlAttr', 'getHelperEscapeHtml'), $methods)
+        );
 
-        // maybe there is a better way to do this, but at the moment it works
-        $callback = function ($name) use ($realPluginmanager) {
-            if ($realPluginmanager) {
-                $plugin = new HelperPluginManager();
-                return $plugin->get($name);
-            }
-            return function ($value) {
-                return $value;
-            };
-        };
+        $stubEscaper = $this->getMock('Zend\Escaper\Escaper', array('escapeHtml', 'escapeHtmlAttr'));
 
-        $stub->expects($this->any())
-            ->method('getView')
-            ->will($this->returnSelf());
+        $stubEscaper->expects($this->any())
+            ->method('escapeHtml')
+            ->will($this->returnArgument(0));
+
+        $stubEscaper->expects($this->any())
+            ->method('escapeHtmlAttr')
+            ->will($this->returnArgument(0));
 
         $stub->expects($this->any())
-            ->method('plugin')
-            ->will($this->returnCallback($callback));
+            ->method('getHelperEscapeHtmlAttr')
+            ->will($this->returnValue($stubEscaper));
+
+        $stub->expects($this->any())
+            ->method('getHelperEscapeHtml')
+            ->will($this->returnValue($stubEscaper));
 
         return $stub;
     }
