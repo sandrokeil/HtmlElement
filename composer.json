@@ -34,9 +34,11 @@
         "zendframework/zend-serializer": "~2.2",
         "zendframework/zend-log": "~2.2",
         "zendframework/zend-modulemanager": "~2.2",
+        "sandrokeil/easy-config": "~1.0",
         "sandrokeil/citools": "~1.0"
     },
     "suggest": {
-        "zendframework/zend-modulemanager": "To use default module configuration"
+        "zendframework/zend-modulemanager": "To use default module configuration",
+        "sandrokeil/easy-config": "To use configuration of view helper factory via module config"
     }
 }

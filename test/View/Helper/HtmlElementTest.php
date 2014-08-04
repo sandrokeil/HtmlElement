@@ -11,7 +11,6 @@ namespace SakeTest\HtmlElement\View\Helper;
 
 use Sake\HtmlElement\View\Helper\HtmlElement;
 use PHPUnit_Framework_TestCase as TestCase;
-use Zend\View\HelperPluginManager;
 
 /**
  * Class HtmlElementTest
@@ -220,6 +219,44 @@ class HtmlElementTest extends TestCase
     }
 
     /**
+     * Tests setEscapeText
+     *
+     * @covers \Sake\HtmlElement\View\Helper\HtmlElement::setEscapeText
+     * @covers \Sake\HtmlElement\View\Helper\HtmlElement::isEscapeText
+     * @group view
+     */
+    public function testSetEscapeText()
+    {
+        $cut = new HtmlElement();
+        $test = false;
+
+        $this->assertEquals(true, $cut->isEscapeText());
+
+        $cut->setEscapeText($test);
+
+        $this->assertEquals($test, $cut->isEscapeText());
+    }
+
+    /**
+     * Tests setEscapeHtmlAttributes
+     *
+     * @covers \Sake\HtmlElement\View\Helper\HtmlElement::setEscapeHtmlAttribute
+     * @covers \Sake\HtmlElement\View\Helper\HtmlElement::isEscapeHtmlAttribute
+     * @group view
+     */
+    public function testSetEscapeHtmlAttributes()
+    {
+        $cut = new HtmlElement();
+        $test = false;
+
+        $this->assertEquals(true, $cut->isEscapeHtmlAttribute());
+
+        $cut->setEscapeHtmlAttribute($test);
+
+        $this->assertEquals($test, $cut->isEscapeHtmlAttribute());
+    }
+
+    /**
      * Tests if call of view helper return new html element object with specified objects
      *
      * @covers \Sake\HtmlElement\View\Helper\HtmlElement::__invoke
@@ -293,6 +330,8 @@ class HtmlElementTest extends TestCase
      * @covers \Sake\HtmlElement\View\Helper\HtmlElement::buildAttributes
      * @covers \Sake\HtmlElement\View\Helper\HtmlElement::__toString
      * @covers \Sake\HtmlElement\View\Helper\HtmlElement::toString
+     * @covers \Sake\HtmlElement\View\Helper\HtmlElement::escapeHtmlAttribute
+     * @covers \Sake\HtmlElement\View\Helper\HtmlElement::escapeText
      * @depends testInvokeShouldReturnObjectWithSpecifiedOptions
      * @group view
      */
@@ -359,7 +398,7 @@ class HtmlElementTest extends TestCase
     {
         $stub = $this->getMock(
             'Sake\HtmlElement\View\Helper\HtmlElement',
-            array_merge(array('getView', 'plugin', 'getHelperEscapeHtmlAttr', 'getHelperEscapeHtml'), $methods)
+            array_merge(array('getView', 'getEscaper'), $methods)
         );
 
         $stubEscaper = $this->getMock('Zend\Escaper\Escaper', array('escapeHtml', 'escapeHtmlAttr'));
@@ -373,11 +412,7 @@ class HtmlElementTest extends TestCase
             ->will($this->returnArgument(0));
 
         $stub->expects($this->any())
-            ->method('getHelperEscapeHtmlAttr')
-            ->will($this->returnValue($stubEscaper));
-
-        $stub->expects($this->any())
-            ->method('getHelperEscapeHtml')
+            ->method('getEscaper')
             ->will($this->returnValue($stubEscaper));
 
         return $stub;

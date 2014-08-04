@@ -23,7 +23,7 @@ class ModuleTest extends \PHPUnit_Framework_TestCase
      *
      * @covers \Sake\HtmlElement\Module::getViewHelperConfig
      */
-    public function testGetServiceConfig()
+    public function testGetViewHelperConfig()
     {
         $cut = new Module();
         $config = $cut->getViewHelperConfig();
@@ -31,6 +31,22 @@ class ModuleTest extends \PHPUnit_Framework_TestCase
             @include 'config/view_helper.config.php',
             $config,
             'View helper configuration could not be read'
+        );
+    }
+
+    /**
+     * Tests getConfig() should should return view helper configuration
+     *
+     * @covers \Sake\HtmlElement\Module::getConfig
+     */
+    public function testGetConfig()
+    {
+        $cut = new Module();
+        $config = $cut->getConfig();
+        $this->assertSame(
+            @include 'config/module.config.php',
+            $config,
+            'Module configuration could not be read'
         );
     }
 }

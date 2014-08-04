@@ -72,18 +72,25 @@ class HtmlElement extends AbstractHelper
     );
 
     /**
-     * Html attribute escaper
+     * Html/text escaper
      *
      * @var Escaper
      */
-    protected $helperEscapeHtmlAttr;
+    protected $escaper;
 
     /**
-     * Html escaper
+     * Should be html attributes escaped
      *
-     * @var Escaper
+     * @var bool
      */
-    protected $helperEscapeHtml;
+    protected $escapeHtmlAttribute = true;
+
+    /**
+     * Should be text escaped
+     *
+     * @var bool
+     */
+    protected $escapeText = true;
 
     /**
      * Create html object with provided settings.
@@ -303,7 +310,7 @@ class HtmlElement extends AbstractHelper
         $attributes = '';
 
         foreach ($this->attributes as $key => $value) {
-            $attributes .= ' ' . $key . '="' . $this->getHelperEscapeHtmlAttr()->escapeHtmlAttr($value) . '"';
+            $attributes .= ' ' . $key . '="' . $this->escapeHtmlAttribute($value) . '"';
         }
         return $attributes;
     }
@@ -320,12 +327,82 @@ class HtmlElement extends AbstractHelper
             return '<' . $this->tag . $this->buildAttributes() . ' />';
         }
 
-        if (!$this->renderHtml) {
-            $text = $this->getHelperEscapeHtml()->escapeHtml($this->text);
+        if (false === $this->renderHtml) {
+            $text = $this->escapeText($this->text);
         } else {
             $text = $this->text;
         }
         return '<' . $this->tag . $this->buildAttributes() . '>' . $text . '</' . $this->tag . '>';
+    }
+
+    /**
+     * Returns if html attributes should be escaped
+     *
+     * @return boolean
+     */
+    public function isEscapeHtmlAttribute()
+    {
+        return $this->escapeHtmlAttribute;
+    }
+
+    /**
+     * Enable/disable escaping of html attributes
+     *
+     * @param boolean $escapeHtmlAttributes
+     * @return HtmlElement
+     */
+    public function setEscapeHtmlAttribute($escapeHtmlAttributes)
+    {
+        $this->escapeHtmlAttribute = (bool) $escapeHtmlAttributes;
+        return $this;
+    }
+
+    /**
+     * Returns if text should be escaped
+     *
+     * @return boolean
+     */
+    public function isEscapeText()
+    {
+        return $this->escapeText;
+    }
+
+    /**
+     * Enable/disable escaping of text
+     *
+     * @param boolean $escapeText
+     * @return HtmlElement
+     */
+    public function setEscapeText($escapeText)
+    {
+        $this->escapeText = (bool) $escapeText;
+        return $this;
+    }
+
+    /**
+     * Returns escaper for html attributes, if no one is set, escaper of view will be used
+     *
+     * @return string
+     */
+    protected function escapeHtmlAttribute($value)
+    {
+        if (false === $this->escapeHtmlAttribute) {
+            return $value;
+        }
+        return $this->getEscaper()->escapeHtmlAttr($value);
+    }
+
+    /**
+     * Returns escaper for html, if no one is set, escaper of view will be used
+     *
+     * @return string
+     */
+    protected function escapeText($value)
+    {
+        if (false === $this->escapeText) {
+            return $value;
+        }
+        return $this->getEscaper()->escapeHtml($value);
     }
 
     /**
@@ -334,47 +411,22 @@ class HtmlElement extends AbstractHelper
      * @param Escaper $helperEscapeHtml
      * @return HtmlElement
      */
-    public function setHelperEscapeHtml(Escaper $helperEscapeHtml)
+    public function setEscaper(Escaper $helperEscapeHtml)
     {
-        $this->helperEscapeHtml = $helperEscapeHtml;
+        $this->escaper = $helperEscapeHtml;
         return $this;
     }
 
     /**
-     * Sets escaper for html attributes
-     *
-     * @param Escaper $helperEscapeHtmlAttr
-     * @return HtmlElement
-     */
-    public function setHelperEscapeHtmlAttr(Escaper $helperEscapeHtmlAttr)
-    {
-        $this->helperEscapeHtmlAttr = $helperEscapeHtmlAttr;
-        return $this;
-    }
-
-    /**
-     * Returns escaper for html attrbiutes, if no one is set, escaper of view will be used
+     * Returns escaper for html, if no one is set, lazy loads escaper from view
      *
      * @return Escaper
      */
-    protected function getHelperEscapeHtmlAttr()
+    protected function getEscaper()
     {
-        if (null === $this->helperEscapeHtmlAttr) {
-            $this->helperEscapeHtmlAttr = $this->getView()->plugin('escapehtmlattr')->getEscaper();
+        if (null === $this->escaper) {
+            $this->escaper = $this->getView()->plugin('escapehtml')->getEscaper();
         }
-        return $this->helperEscapeHtmlAttr;
-    }
-
-    /**
-     * Returns escaper for html, if no one is set, escaper of view will be used
-     *
-     * @return Escaper
-     */
-    protected function getHelperEscapeHtml()
-    {
-        if (null === $this->helperEscapeHtml) {
-            $this->helperEscapeHtml = $this->getView()->plugin('escapehtml')->getEscaper();
-        }
-        return $this->helperEscapeHtml;
+        return $this->escaper;
     }
 }

@@ -10,16 +10,33 @@
 namespace Sake\HtmlElement\Service;
 
 use Sake\HtmlElement\View\Helper\HtmlElement;
+use Sake\EasyConfig\Service\AbstractConfigurableFactory;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\ServiceManager\FactoryInterface;
 
 /**
  * HtmlElement view helper factory
  *
  * Creates html view helper and injects escaper
  */
-class HtmlElementFactory implements FactoryInterface
+class HtmlElementFactory extends AbstractConfigurableFactory
 {
+    /**
+     * Config name
+     *
+     * @var string
+     */
+    protected $name;
+
+    /**
+     * Initialize object with config key name
+     *
+     * @param string $name Config name
+     */
+    public function __construct($name = 'default')
+    {
+        $this->name = $name;
+    }
+
     /**
      * Creates html view helper
      *
@@ -29,10 +46,53 @@ class HtmlElementFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
+        $options = $this->getOptions($serviceLocator);
+
         $htmlElement = new HtmlElement();
 
-        $htmlElement->setHelperEscapeHtmlAttr($serviceLocator->get('escapehtmlattr')->getEscaper());
-        $htmlElement->setHelperEscapeHtml($serviceLocator->get('escapehtml')->getEscaper());
+        if (isset($options['escapeHtmlAttribute'])) {
+            $htmlElement->setEscapeHtmlAttribute($options['escapeHtmlAttribute']);
+        }
+
+        if (isset($options['escapeText'])) {
+            $htmlElement->setEscapeText($options['escapeText']);
+        }
+
+        if ($htmlElement->isEscapeText()
+            || $htmlElement->isEscapeHtmlAttribute()
+        ) {
+            $htmlElement->setEscaper($serviceLocator->get('viewhelpermanager')->get('escapehtml')->getEscaper());
+        }
         return $htmlElement;
+    }
+
+    /**
+     * Module name
+     *
+     * @return string
+     */
+    public function getModule()
+    {
+        return 'sake_htmlelement';
+    }
+
+    /**
+     * Config scope
+     *
+     * @return string
+     */
+    public function getScope()
+    {
+        return 'view_helper';
+    }
+
+    /**
+     * Config name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 }
