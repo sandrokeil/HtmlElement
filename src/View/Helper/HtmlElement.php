@@ -96,10 +96,6 @@ class HtmlElement extends AbstractHelper
      */
     public function __invoke($tag, $text = '', array $attributes = array(), $renderHtml = false)
     {
-        // initialize helper for performance reasons
-        $this->getHelperEscapeHtml();
-        $this->getHelperEscapeHtmlAttr();
-
         $html = clone $this;
 
         $html->setTag($tag);

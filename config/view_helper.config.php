@@ -8,7 +8,7 @@
  */
 
 return array(
-    'invokables' => array(
-       'html' => '\Sake\HtmlElement\View\Helper\HtmlElement',
+    'factories' => array(
+        'html' => '\Sake\HtmlElement\Service\HtmlElementFactory',
     ),
 );
