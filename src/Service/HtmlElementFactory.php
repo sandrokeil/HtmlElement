@@ -12,13 +12,14 @@ namespace Sake\HtmlElement\Service;
 use Sake\HtmlElement\View\Helper\HtmlElement;
 use Sake\EasyConfig\Service\AbstractConfigurableFactory;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\FactoryInterface;
 
 /**
  * HtmlElement view helper factory
  *
  * Creates html view helper and injects escaper
  */
-class HtmlElementFactory extends AbstractConfigurableFactory
+class HtmlElementFactory extends AbstractConfigurableFactory implements FactoryInterface
 {
     /**
      * Config name
@@ -46,7 +47,7 @@ class HtmlElementFactory extends AbstractConfigurableFactory
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $options = $this->getOptions($serviceLocator);
+        $options = $this->getOptions($serviceLocator->getServiceLocator());
 
         $htmlElement = new HtmlElement();
 
@@ -61,7 +62,9 @@ class HtmlElementFactory extends AbstractConfigurableFactory
         if ($htmlElement->isEscapeText()
             || $htmlElement->isEscapeHtmlAttribute()
         ) {
-            $htmlElement->setEscaper($serviceLocator->get('viewhelpermanager')->get('escapehtml')->getEscaper());
+            $htmlElement->setEscaper(
+                $serviceLocator->getServiceLocator()->get('viewhelpermanager')->get('escapehtml')->getEscaper()
+            );
         }
         return $htmlElement;
     }

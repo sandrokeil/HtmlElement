@@ -9,6 +9,6 @@
 
 return array(
     'factories' => array(
-        'html' => '\Sake\HtmlElement\Service\HtmlElementFactory',
+        'html' => 'Sake\HtmlElement\Service\HtmlElementFactory',
     ),
 );
