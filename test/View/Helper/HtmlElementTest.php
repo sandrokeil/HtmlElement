@@ -11,6 +11,7 @@ namespace SakeTest\HtmlElement\View\Helper;
 
 use Sake\HtmlElement\View\Helper\HtmlElement;
 use PHPUnit_Framework_TestCase as TestCase;
+use Zend\Escaper\Escaper;
 
 /**
  * Class HtmlElementTest
@@ -256,6 +257,26 @@ class HtmlElementTest extends TestCase
         $this->assertEquals($test, $cut->isEscapeHtmlAttribute());
     }
 
+
+    /**
+     * Tests setEscaper
+     *
+     * @covers \Sake\HtmlElement\View\Helper\HtmlElement::setEscaper
+     * @covers \Sake\HtmlElement\View\Helper\HtmlElement::getEscaper
+     * @group view
+     */
+    public function testSetEscaper()
+    {
+        $class = new \ReflectionClass('\Sake\HtmlElement\View\Helper\HtmlElement');
+        $method = $class->getMethod('getEscaper');
+        $method->setAccessible(true);
+
+        $cut = new HtmlElement();
+        $cut->setEscaper(new Escaper());
+
+        $this->assertInstanceOf('\Zend\Escaper\Escaper', $method->invoke($cut));
+    }
+
     /**
      * Tests if call of view helper return new html element object with specified objects
      *
@@ -317,6 +338,8 @@ class HtmlElementTest extends TestCase
         $element = $stub($tag, $text, $attributes);
         $html = (string) $element;
 
+        $this->assertEquals('', $html);
+
         $this->assertFalse(
             $this->hasError(E_USER_WARNING, 'Exception occurred'),
             sprintf('Error "%s" with message "%s" was not found', E_USER_WARNING, 'Exception occurred')
@@ -353,6 +376,10 @@ class HtmlElementTest extends TestCase
         $this->assertEquals($expectedHtml, $element->render(), 'Html element rendering failed');
         $this->assertEquals($expectedHtml, $element->__toString(), 'Html element rendering failed');
         $this->assertEquals($expectedHtml, $element->toString(), 'Html element rendering failed');
+
+        $element->setEscapeText(false);
+        $element->setEscapeHtmlAttribute(false);
+        $this->assertEquals($expectedHtml, $element->render(), 'Html element rendering failed');
 
         $element->enableHtml(true);
         $this->assertEquals($expectedHtml, $element->render(), 'Html element rendering failed');

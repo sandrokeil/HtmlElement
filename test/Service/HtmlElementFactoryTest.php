@@ -61,8 +61,10 @@ class HtmlElementFactoryTest extends TestCase
     {
         $factory = new HtmlElementFactory();
 
+        $this->assertInstanceOf('Zend\ServiceManager\FactoryInterface', $factory);
+
         /* @var $service \Sake\HtmlElement\Service\HtmlElementFactory */
-        $service = $factory->createService($this->serviceManager);
+        $service = $factory->createService($this->serviceManager->get('viewhelpermanager'));
         $this->assertInstanceOf(
             '\Sake\HtmlElement\View\Helper\HtmlElement',
             $service,

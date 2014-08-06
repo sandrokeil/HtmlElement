@@ -1,6 +1,6 @@
 # HtmlElement CHANGELOG
 
-## Version 1.1.0 TBA
+## Version 1.1.0 (2014-08-06)
 
 * increased performance of view helper
 * added configuration for view helper
