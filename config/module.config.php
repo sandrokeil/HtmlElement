@@ -8,7 +8,12 @@
  */
 
 return array(
-    'factories' => array(
-        'html' => 'Sake\HtmlElement\Service\HtmlElementFactory',
+    'sake_htmlelement' => array(
+        'view_helper' => array(
+            'default' => array(
+                'escapeHtmlAttribute' => true,
+                'escapeText' => true,
+            ),
+        ),
     ),
 );

@@ -60,3 +60,23 @@ echo $this->html(
     true
 );
 ```
+
+## Performance tweaks
+The default bevaviour of html element is maximum security. But if you have thousands of html tags it could be slow. If your html attributes are not from user input, you can disable escaping of html attributes to increase performance. You can also disable escaping of text to unleash the beast. ;-) This is simply done by adding the following lines to your `module.config.php`, but keep security in mind.
+
+```php
+<?php
+
+return array(
+    'sake_htmlelement' => array(
+        'view_helper' => array(
+            'default' => array(
+                'escapeHtmlAttribute' => false,
+                'escapeText' => false,
+            ),
+        ),
+    ),
+    // other module config stuff
+);
+
+```

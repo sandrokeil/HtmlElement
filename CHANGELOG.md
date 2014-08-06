@@ -1,5 +1,10 @@
 # HtmlElement CHANGELOG
 
+## Version 1.1.0 (2014-08-06)
+
+* increased performance of view helper
+* added configuration for view helper
+
 ## Version 1.0.0 (2014-06-10)
 
 * Exception handling on __toString() function

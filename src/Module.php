@@ -9,12 +9,13 @@
 
 namespace Sake\HtmlElement;
 
+use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\ModuleManager\Feature\ViewHelperProviderInterface;
 
 /**
  * This class initializes the HtmlElement module.
  */
-class Module implements ViewHelperProviderInterface
+class Module implements ViewHelperProviderInterface, ConfigProviderInterface
 {
     /**
      * Expected to return \Zend\ServiceManager\Config object or array to
@@ -25,5 +26,16 @@ class Module implements ViewHelperProviderInterface
     public function getViewHelperConfig()
     {
         return require dirname(__DIR__) . '/config/view_helper.config.php';
+    }
+
+    /**
+     * Expected to return \Zend\ServiceManager\Config object or array to
+     * seed such an object.
+     *
+     * @return array
+     */
+    public function getConfig()
+    {
+        return require dirname(__DIR__) . '/config/module.config.php';
     }
 }
