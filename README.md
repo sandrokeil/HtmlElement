@@ -4,7 +4,7 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/sandrokeil/HtmlElement/badges/quality-score.png?s=17ebfee6d9890d3f43becccc084746fed2fc6707)](https://scrutinizer-ci.com/g/sandrokeil/HtmlElement/)
 [![Coverage Status](https://coveralls.io/repos/sandrokeil/HtmlElement/badge.png)](https://coveralls.io/r/sandrokeil/HtmlElement)
 [![HHVM Status](http://hhvm.h4cc.de/badge/sandrokeil/html-element.svg)](http://hhvm.h4cc.de/package/sandrokeil/html-element)
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/f105b7da-8af5-42c8-995e-9eb842070746/mini.png)](https://insight.sensiolabs.com/projects/f105b7da-8af5-42c8-995e-9eb842070746)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/be3b8aac-da7b-4ae1-a842-82ffca2712d0/mini.png)](https://insight.sensiolabs.com/projects/be3b8aac-da7b-4ae1-a842-82ffca2712d0)
 [![Latest Stable Version](https://poser.pugx.org/sandrokeil/html-element/v/stable.png)](https://packagist.org/packages/sandrokeil/html-element)
 [![Dependency Status](https://www.versioneye.com/user/projects/53615cc9fe0d07fa670000cb/badge.png)](https://www.versioneye.com/user/projects/53615cc9fe0d07fa670000cb)
 [![Total Downloads](https://poser.pugx.org/sandrokeil/html-element/downloads.png)](https://packagist.org/packages/sandrokeil/html-element)
