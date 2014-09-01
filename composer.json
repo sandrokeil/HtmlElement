@@ -1,6 +1,6 @@
 {
     "name": "sandrokeil/html-element",
-    "description": "Zend Framework 2 view helper plugin to use html tags like objects and to render them.",
+    "description": "Zend Framework 2 (zf2) view helper plugin to use html tags like objects and to render them.",
     "homepage": "https://github.com/sandrokeil/HtmlElement",
     "license": "BSD-3-Clause",
     "type": "library",
