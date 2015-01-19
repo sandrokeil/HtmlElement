@@ -3,7 +3,7 @@
  * Sake
  *
  * @link      http://github.com/sandrokeil/HtmlElement for the canonical source repository
- * @copyright Copyright (c) 2014 Sandro Keil
+ * @copyright Copyright (c) 2014-2015 Sandro Keil
  * @license   http://github.com/sandrokeil/HtmlElement/blob/master/LICENSE.txt New BSD License
  */
 
@@ -122,7 +122,7 @@ class HtmlElement extends AbstractHelper
         try {
             $html = $this->render();
         } catch (\Exception $exception) {
-            trigger_error($exception->getMessage() . PHP_EOL . $exception->getTraceAsString(), E_USER_WARNING);
+            trigger_error($exception, E_USER_WARNING);
             $html = '';
         }
         return $html;

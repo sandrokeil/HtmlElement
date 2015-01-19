@@ -3,7 +3,7 @@
  * Sake
  *
  * @link      http://github.com/sandrokeil/HtmlElement for the canonical source repository
- * @copyright Copyright (c) 2014 Sandro Keil
+ * @copyright Copyright (c) 2014-2015 Sandro Keil
  * @license   http://github.com/sandrokeil/HtmlElement/blob/master/LICENSE.txt New BSD License
  */
 
@@ -326,7 +326,7 @@ class HtmlElementTest extends TestCase
 
         $stub->expects($this->any())
             ->method('render')
-            ->will($this->throwException(new \Exception('Exception occurred')));
+            ->will($this->throwException(new \Exception('Exception occurred', 0, new \Exception('Previous Exception occurred'))));
 
         $text = 'my text';
         $tag = 'div';
@@ -343,6 +343,11 @@ class HtmlElementTest extends TestCase
         $this->assertFalse(
             $this->hasError(E_USER_WARNING, 'Exception occurred'),
             sprintf('Error "%s" with message "%s" was not found', E_USER_WARNING, 'Exception occurred')
+        );
+
+        $this->assertFalse(
+            $this->hasError(E_USER_WARNING, 'Previous Exception occurred'),
+            sprintf('Error "%s" with message "%s" was not found', E_USER_WARNING, 'Previous Exception occurred')
         );
     }
 
