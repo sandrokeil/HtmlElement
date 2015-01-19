@@ -326,7 +326,15 @@ class HtmlElementTest extends TestCase
 
         $stub->expects($this->any())
             ->method('render')
-            ->will($this->throwException(new \Exception('Exception occurred', 0, new \Exception('Previous Exception occurred'))));
+            ->will(
+                $this->throwException(
+                    new \Exception(
+                        'Exception occurred',
+                        0,
+                        new \Exception('Previous Exception occurred')
+                    )
+                )
+            );
 
         $text = 'my text';
         $tag = 'div';
