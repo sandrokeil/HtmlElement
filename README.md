@@ -1,10 +1,10 @@
 # HtmlElement view helper for Zend Framework 2
 
-> You want html tags as objects?
+> You want HTML tags as objects?
 
-> You want surefire generated html tags and html attributes?
+> You want surefire generated HTML tags and HTML attributes?
 
-> You want to generate html tags on the fly?
+> You want to generate HTML tags on the fly?
 
 > This module comes to the rescue!
 
@@ -18,16 +18,16 @@
 [![Total Downloads](https://poser.pugx.org/sandrokeil/html-element/downloads.png)](https://packagist.org/packages/sandrokeil/html-element)
 [![License](https://poser.pugx.org/sandrokeil/html-element/license.png)](https://packagist.org/packages/sandrokeil/html-element)
 
-Zend Framework 2 view helper plugin for generating html tags. Use html tags as objects and manipulate html attributes and values.
+Zend Framework 2 view helper plugin for generating HTML tags. Use HTML tags as objects and manipulate HTML attributes and values.
 
- * **Well tested.** Besides unit test and continuous integration/inspection this solution is also ready for production use.
+ * **Well tested.** Besides unit tests and continuous integration/inspection this solution is also ready for production use.
  * **Great foundations.** Based on [Zend Framework 2](https://github.com/zendframework/zf2) and [Easy Config](https://github.com/sandrokeil/EasyConfig)
  * **Every change is tracked**. Want to know whats new? Take a look at [CHANGELOG.md](CHANGELOG.md)
  * **Listen to your ideas.** Have a great idea? Bring your tested pull request or open a new issue. See [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## Installation
 
-Installation of this module uses composer. For composer documentation, please refer to
+Installation of this module uses Composer. For Composer documentation, please refer to
 [getcomposer.org](http://getcomposer.org/).
 
 Put the following into your composer.json
@@ -55,7 +55,7 @@ $div = $this->html('div');
 echo $div->setText('my content')
     ->setAttributes(array('id' => 'content', 'class' => 'box shadow'));
 
-// to render html you can use
+// to render HTML you can use
 echo $div->enableHtml(true)
     ->setText(
         $this->html('p')->setText('Hello World!')->appendClass('welcome');
@@ -71,7 +71,10 @@ echo $this->html(
 ```
 
 ## Performance tweaks
-The default behaviour of html element is maximum security. But if you have thousands of html tags it could be slow. If your html attributes are not from user input, you can disable escaping of html attributes to increase performance. You can also disable escaping of text to unleash the beast. ;-) This is simply done by adding the following lines to your `module.config.php`, but keep security in mind.
+The default behaviour of HtmlElement is maximum security. But if you have thousands of HTML tags it could be slow.
+If your HTML attributes are not from user input, you can disable escaping of HTML attributes to increase performance.
+You can also disable escaping of text to unleash the beast. ;-) This is simply done by adding the following lines to
+your `module.config.php`, but keep security in mind.
 
 ```php
 <?php

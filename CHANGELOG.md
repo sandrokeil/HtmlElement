@@ -1,6 +1,6 @@
 # HtmlElement CHANGELOG
 
-## Version 1.1.1 ((2015-01-19))
+## Version 1.1.1 (2015-01-19)
 
 * Previous exceptions are now triggered in __toString()
 
