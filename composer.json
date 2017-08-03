@@ -23,7 +23,7 @@
         }
     },
     "require": {
-        "php": "~5.3",
+        "php": "~5.3 || ~7.0",
         "zendframework/zend-view": "~2.2",
         "zendframework/zend-escaper": "~2.2"
     },
