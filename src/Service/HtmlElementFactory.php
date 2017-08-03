@@ -3,99 +3,92 @@
  * Sake
  *
  * @link      http://github.com/sandrokeil/HtmlElement for the canonical source repository
- * @copyright Copyright (c) 2014 Sandro Keil
+ * @copyright Copyright (c) 2014-2017 Sandro Keil
  * @license   http://github.com/sandrokeil/HtmlElement/blob/master/LICENSE.txt New BSD License
  */
 
 namespace Sake\HtmlElement\Service;
 
 use Sake\HtmlElement\View\Helper\HtmlElement;
-use Sake\EasyConfig\Service\AbstractConfigurableFactory;
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\ServiceManager\FactoryInterface;
+use Interop\Config\ConfigurationTrait;
+use Interop\Config\ProvidesDefaultOptions;
+use Interop\Config\RequiresConfigId;
+use Interop\Container\ContainerInterface;
 
 /**
  * HtmlElement view helper factory
  *
  * Creates html view helper and injects escaper
  */
-class HtmlElementFactory extends AbstractConfigurableFactory implements FactoryInterface
+class HtmlElementFactory implements ProvidesDefaultOptions, RequiresConfigId
 {
+
+    use ConfigurationTrait;
+
     /**
-     * Config name
-     *
      * @var string
      */
-    protected $name;
+    private $configId;
 
     /**
-     * Initialize object with config key name
+     * Creates a new instance from a specified config, specifically meant to be used as static factory.
      *
-     * @param string $name Config name
+     * In case you want to use another config key than provided by the factories, you can add the following factory to
+     * your config:
+     *
+     * <code>
+     * <?php
+     * return [
+     *     HtmlElement::class => [HtmlElementFactory::class, 'service_name'],
+     * ];
+     * </code>
+     *
+     * @throws \InvalidArgumentException
      */
-    public function __construct($name = 'default')
+    public static function __callStatic(string $name, array $arguments): HtmlElement
     {
-        $this->name = $name;
+        if (! isset($arguments[0]) || ! $arguments[0] instanceof ContainerInterface) {
+            throw new \InvalidArgumentException(
+                sprintf('The first argument must be of type %s', ContainerInterface::class)
+            );
+        }
+
+        return (new static($name))->__invoke($arguments[0]);
     }
 
-    /**
-     * Creates html view helper
-     *
-     * @see \Zend\ServiceManager\FactoryInterface::createService()
-     * @param ServiceLocatorInterface $serviceLocator Service locator
-     * @return HtmlElement
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $container): HtmlElement
     {
-        $options = $this->getOptions($serviceLocator->getServiceLocator());
+        $config = $container->get('config');
+        $config = $this->options($config, $this->configId);
 
         $htmlElement = new HtmlElement();
 
-        if (isset($options['escapeHtmlAttribute'])) {
-            $htmlElement->setEscapeHtmlAttribute($options['escapeHtmlAttribute']);
+        if (isset($config['escapeHtmlAttribute'])) {
+            $htmlElement->setEscapeHtmlAttribute($config['escapeHtmlAttribute']);
         }
 
-        if (isset($options['escapeText'])) {
-            $htmlElement->setEscapeText($options['escapeText']);
+        if (isset($config['escapeText'])) {
+            $htmlElement->setEscapeText($config['escapeText']);
         }
 
-        if ($htmlElement->isEscapeText()
-            || $htmlElement->isEscapeHtmlAttribute()
-        ) {
-            $htmlElement->setEscaper(
-                $serviceLocator->getServiceLocator()->get('viewhelpermanager')->get('escapehtml')->getEscaper()
-            );
-        }
         return $htmlElement;
     }
 
-    /**
-     * Module name
-     *
-     * @return string
-     */
-    public function getModule()
+    public function __construct(string $configId = 'default')
     {
-        return 'sake_htmlelement';
+        $this->configId = $configId;
     }
 
-    /**
-     * Config scope
-     *
-     * @return string
-     */
-    public function getScope()
+    public function dimensions(): iterable
     {
-        return 'view_helper';
+        return ['sake_htmlelement', 'view_helper'];
     }
 
-    /**
-     * Config name
-     *
-     * @return string
-     */
-    public function getName()
+    public function defaultOptions(): iterable
     {
-        return $this->name;
+        return [
+            'escapeHtmlAttribute' => true,
+            'escapeText' => true,
+        ];
     }
 }

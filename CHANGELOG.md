@@ -1,5 +1,10 @@
 # HtmlElement CHANGELOG
 
+## Version 2.0.0 (2017-08-04)
+
+* Use >= PHP 7.0 only
+* Removed Zend Framework module config
+
 ## Version 1.1.1 (2015-01-19)
 
 * Previous exceptions are now triggered in __toString()
