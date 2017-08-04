@@ -1,4 +1,4 @@
-# HtmlElement view helper for Zend Framework 2
+# HtmlElement view helper for Zend Framework
 
 > You want HTML tags as objects?
 
@@ -18,10 +18,10 @@
 [![Total Downloads](https://poser.pugx.org/sandrokeil/html-element/downloads.png)](https://packagist.org/packages/sandrokeil/html-element)
 [![License](https://poser.pugx.org/sandrokeil/html-element/license.png)](https://packagist.org/packages/sandrokeil/html-element)
 
-Zend Framework 2 view helper plugin for generating HTML tags. Use HTML tags as objects and manipulate HTML attributes and values.
+Zend Framework view helper plugin for generating HTML tags. Use HTML tags as objects and manipulate HTML attributes and values.
 
  * **Well tested.** Besides unit tests and continuous integration/inspection this solution is also ready for production use.
- * **Great foundations.** Based on [Zend Framework 2](https://github.com/zendframework/zf2) and [Easy Config](https://github.com/sandrokeil/EasyConfig)
+ * **Great foundations.** Based on [Zend Framework](https://github.com/zendframework) and [interop-config](https://github.com/sandrokeil/interop-config)
  * **Every change is tracked**. Want to know whats new? Take a look at [CHANGELOG.md](CHANGELOG.md)
  * **Listen to your ideas.** Have a great idea? Bring your tested pull request or open a new issue. See [CONTRIBUTING.md](CONTRIBUTING.md)
 
@@ -34,11 +34,22 @@ Put the following into your composer.json
 
     {
         "require": {
-            "sandrokeil/html-element": "~1.0"
+            "sandrokeil/html-element": "^2.0"
         }
     }
 
-Then add `Sake\HtmlElement` to your `./config/application.config.php`.
+Please register the `HtmlElement` view helper to your [Zend\View plugin manager](https://zendframework.github.io/zend-view/helpers/advanced-usage/). 
+You can use the `Sake\HtmlElement\Service\HtmlElementFactory` factory if you install [interop-config](https://github.com/sandrokeil/interop-config).
+
+```php
+return [
+   'view_helpers' => [
+        'factories' => [
+            \Sake\HtmlElement\View\Helper\HtmlElement::class => \Sake\HtmlElement\Service\HtmlElementFactory::class,
+        ],
+    ],
+];
+```
 
 ## Documentation
 
@@ -74,7 +85,7 @@ echo $this->html(
 The default behaviour of HtmlElement is maximum security. But if you have thousands of HTML tags it could be slow.
 If your HTML attributes are not from user input, you can disable escaping of HTML attributes to increase performance.
 You can also disable escaping of text to unleash the beast. ;-) This is simply done by adding the following lines to
-your `module.config.php`, but keep security in mind.
+your config file, but keep security in mind.
 
 ```php
 <?php

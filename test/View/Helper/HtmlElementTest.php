@@ -3,14 +3,14 @@
  * Sake
  *
  * @link      http://github.com/sandrokeil/HtmlElement for the canonical source repository
- * @copyright Copyright (c) 2014-2015 Sandro Keil
+ * @copyright Copyright (c) 2014-2017 Sandro Keil
  * @license   http://github.com/sandrokeil/HtmlElement/blob/master/LICENSE.txt New BSD License
  */
 
 namespace SakeTest\HtmlElement\View\Helper;
 
 use Sake\HtmlElement\View\Helper\HtmlElement;
-use PHPUnit_Framework_TestCase as TestCase;
+use PHPUnit\Framework\TestCase;
 use Zend\Escaper\Escaper;
 
 /**
@@ -515,5 +515,12 @@ class HtmlElementTest extends TestCase
                 'tag' => 'wbr',
             ),
         );
+    }
+
+    private function getMock($class, $methods)
+    {
+        return $this->getMockBuilder($class)
+            ->setMethods($methods)
+            ->getMock();
     }
 }
